@@ -16,7 +16,7 @@ export default {
     },
     methods:{
         onDelete(id){
-           this.$emit('delete-task',id);
+           this.$emit('delete-task',id); //Here we are emitting this event upwards to the parents..! Giving custom name as 'delete-task' and passing "id".
         }
     }
 }
