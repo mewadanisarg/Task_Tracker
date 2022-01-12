@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <Header title="My Task Tracker"/>
-    <Tasks @delete-task="deleteTask" :tasks="tasks"/>
+    <AddTask @add-task="add-task"/>
+    <Tasks @toggle-reminder="toggleReminder" @delete-task="deleteTask" :tasks="tasks"/>
+    
   </div>
 </template>
 
@@ -9,6 +11,7 @@
 import Header from './components/Header'
 import Tasks from './components/Tasks'
 import Task from './components/Task'
+import AddTask from './components/AddTask'
 
 export default {
   name: 'App',
@@ -16,6 +19,7 @@ export default {
     Header,
     Tasks,
     Task,
+    AddTask,
   },
   data(){
     return{
@@ -23,12 +27,21 @@ export default {
     }
   },
   methods: {
+    addTask(task){
+      this.tasks = [...this.tasks, task]
+    },
     deleteTask(id){
       if(confirm('Are you sure, you want to delete the task ?')){
 
-        this.tasks = this.tasks.filter((task)=> task.id !== id)  
+        this.tasks = this.tasks.filter((task)=> task.id !== id)  // filter takes a function and it will loop through task.. We want "task.id" which is passed in the methods argument (id) and give us everything except the the id passed in the "method's" 'id' .  
       }
-    }
+    },
+    toggleReminder(id){
+      // map () => We want to reminder the array of updated task, so we are using map(). 
+      // for each (task) condition.:! if task.id is equal to id that is passed in and if it is true then, it return an array of object where it has inital task properties and we want to change the reminder whatever the opposite of the current task reminder is.  If it doesnt match the id than we want to return the task..!
+      // this.task = this.tasks.map((task)=>task.id === id ? {...task, reminder: !task.reminder} : task) 
+      console.log(id);
+    },
   },
   created() {
     this.tasks = [
@@ -65,6 +78,11 @@ export default {
 }
 body {
   font-family: 'Poppins', sans-serif;
+  /* background-image: url('https://onemamasdailydrama.com/wp-content/uploads/2019/12/desktop-organizer-wallpaper-feature.jpg');
+  background-size: 100%;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+  height: 100%; */
 }
 .container {
   max-width: 500px;
@@ -74,6 +92,7 @@ body {
   border: 1px solid rgb(20, 223, 189);
   padding: 30px;
   border-radius: 5px;
+  
 }
 .btn {
   display: inline-block;
